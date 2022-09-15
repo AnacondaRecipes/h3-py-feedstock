@@ -1,5 +1,6 @@
 {% set name = "h3" %}
 {% set version = "3.7.4" %}
+{% set sha256 = "f8edf5a546b31afdcd801b60448ea890ce1ff418fb784335e1329519f13aa85e" %}
 
 package:
   name: {{ name|lower }}-py
@@ -7,11 +8,11 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: f8edf5a546b31afdcd801b60448ea890ce1ff418fb784335e1329519f13aa85e
+  sha256: {{ sha256 }}
 
 build:
   number: 0
-  skip: true  # [python_impl == 'pypy']
+  skip: true # [s390x]
   script: {{ PYTHON }} -m pip install . -vv
 
 requirements:
@@ -22,6 +23,8 @@ requirements:
   host:
     - python
     - pip
+    - setuptools
+    - wheel
     - scikit-build
     - cython
   run:
@@ -29,15 +32,24 @@ requirements:
     - numpy
 
 test:
+  requires:
+    - pip
   imports:
     - h3
+    - h3._cy
+  commands:
+    - pip check
 
 about:
-  home: https://github.com/uber/h3-py.git
+  home: https://github.com/uber/h3-py
   license: Apache-2.0
   license_family: Apache
   license_file: LICENSE
-  summary: Python bindings for H3, a hierarchical hexagonal geospatial indexing system developed by Uber Technologies
+  summary: Uber's H3 Hexagonal Hierarchical Geospatial Indexing System in Python
+  description: |
+    Uber's H3 Hexagonal Hierarchical Geospatial Indexing System in Python
+  doc_url: https://uber.github.io/h3-py/intro.html
+  doc_source_url: https://github.com/uber/h3-py/tree/master/docs
   dev_url: https://github.com/uber/h3-py.git
 
 extra:
