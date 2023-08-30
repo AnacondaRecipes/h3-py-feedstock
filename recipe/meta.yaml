@@ -21,9 +21,11 @@ requirements:
     - cmake                 # [unix]
   host:
     - python
+    - cython
     - pip
     - scikit-build
-    - cython
+    - setuptools
+    - wheel
   run:
     - python
     # To enable an optional numpy_int API, see https://github.com/uber/h3-py/blob/f3f0144c76c60bb4fe50ca9e5d210290a2824a94/src/h3/api/numpy_int/_binding.py#L6-L7
