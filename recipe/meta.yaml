@@ -18,9 +18,10 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - make                  # [unix]
-    - cmake
   host:
     - python
+    # scikit-build runs cmake in host
+    - cmake
     - cython
     - pip
     - scikit-build
