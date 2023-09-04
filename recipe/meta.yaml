@@ -1,6 +1,5 @@
 {% set name = "h3" %}
-{% set version = "3.7.4" %}
-{% set sha256 = "f8edf5a546b31afdcd801b60448ea890ce1ff418fb784335e1329519f13aa85e" %}
+{% set version = "3.7.6" %}
 
 package:
   name: {{ name|lower }}-py
@@ -8,12 +7,11 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  sha256: 9bbd3dbac99532fa521d7d2e288ff55877bea3223b070f659ed7b5f8f1f213eb
 
 build:
   number: 0
-  skip: true # [s390x]
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   build:
@@ -22,21 +20,23 @@ requirements:
     - make                  # [unix]
   host:
     - python
+    # scikit-build runs cmake in host
+    - cmake
+    - cython
     - pip
+    - scikit-build
     - setuptools
     - wheel
-    - scikit-build
-    - cython
   run:
     - python
+    # To enable an optional numpy_int API, see https://github.com/uber/h3-py/blob/f3f0144c76c60bb4fe50ca9e5d210290a2824a94/src/h3/api/numpy_int/_binding.py#L6-L7
     - numpy
 
 test:
-  requires:
-    - pip
   imports:
     - h3
-    - h3._cy
+  requires:
+    - pip
   commands:
     - pip check
 
@@ -49,8 +49,7 @@ about:
   description: |
     Uber's H3 Hexagonal Hierarchical Geospatial Indexing System in Python
   doc_url: https://uber.github.io/h3-py/intro.html
-  doc_source_url: https://github.com/uber/h3-py/tree/master/docs
-  dev_url: https://github.com/uber/h3-py.git
+  dev_url: https://github.com/uber/h3-py
 
 extra:
   recipe-maintainers:
